@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#00695c</color>
     <color name="light">#f7f7f7</color>
     <color name="dark">#636363</color>
+    <color name="textColorPrimary">@color/light</color>
+    <color name="textColorPrimaryDark">@color/dark</color>
 </resources>
