@@ -24,7 +24,6 @@ public class DBAdapter {
     public long insertTask(String task, Calendar date) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase(); // get a writable sql database
 
-        // TODO make a function that check if it is a duplicated data
         if (readTask(task, date).getCount() > 0) {
             Log.e(getClass().getName(), "identical task already exists");
             return ERROR_TASK_ALREADY_EXISTS;
