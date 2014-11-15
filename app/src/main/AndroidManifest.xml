@@ -19,7 +19,8 @@
 
         <activity
             android:name=".AddTaskActivity"
-            android:label="@string/add_task" />
+            android:label="@string/add_task"
+            android:parentActivityName=".HomeActivity"/>
 
     </application>
 

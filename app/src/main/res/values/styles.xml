@@ -1,10 +1,14 @@
 <resources>
 
-    <style name="ActionBarTheme" parent="AppTheme" >
+    <style name="ToolbarTheme" parent="AppTheme" >
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="colorControlNormal">#ffff</item>
-        <item name="colorControlHighlight">#3fff</item>
+        <item name="actionMenuTextAppearance">@style/ToolbarTheme.TextAppearance</item>
+        <item name="actionMenuTextColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="ToolbarTheme.TextAppearance" >
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base">
@@ -12,11 +16,14 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:textColorPrimary">@color/textColorPrimaryDark</item>
+        <item name="android:textColor">@color/textColorPrimaryDark</item>
+        <item name="android:textColorHint">@color/textColorPrimaryDark</item>
         <item name="android:windowBackground">@color/light</item>
+        <item name="colorAccent">#ff9977</item>
     </style>
 
 </resources>

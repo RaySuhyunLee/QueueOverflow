@@ -18,7 +18,7 @@ public class HomeActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        setToolbar();
+        initializeToolbar();
         
         ImageButton button_add = (ImageButton)findViewById(R.id.button_add);
         button_add.setOnClickListener(new OnClickListener() {

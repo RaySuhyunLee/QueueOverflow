@@ -3,9 +3,8 @@
 
     <string name="app_name">할 일이 산더미</string>
     <string name="add_task">새 할 일</string>
-    <string name="task_name">내용</string>
+    <string name="task_name">할 일</string>
     <string name="task_date">기한</string>
-    <string name="add">추가</string>
-    <string name="cancle">취소</string>
+    <string name="save">저장</string>
 
 </resources>
