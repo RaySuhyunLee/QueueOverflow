@@ -15,15 +15,26 @@
 
     </style>
 
+    <style name="AppTheme.Light" parent="AppTheme.Light.Base">
+
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@color/light</item>
+        <item name="colorAccent">#ff9977</item>
+    </style>
+
+    <style name="AppTheme.Light.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">#ff9977</item>
         <item name="android:textColorPrimary">@color/textColorPrimaryDark</item>
         <item name="android:textColor">@color/textColorPrimaryDark</item>
         <item name="android:textColorHint">@color/textColorPrimaryDark</item>
         <item name="android:windowBackground">@color/light</item>
-        <item name="colorAccent">#ff9977</item>
     </style>
 
 </resources>
