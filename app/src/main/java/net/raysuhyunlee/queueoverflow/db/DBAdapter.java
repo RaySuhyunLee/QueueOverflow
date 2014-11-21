@@ -7,8 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import net.raysuhyunlee.queueoverflow.Task;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by SuhyunLee on 14. 11. 13..
@@ -34,83 +39,119 @@ public class DBAdapter {
     public long insertTask(String task, Calendar date) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase(); // get a writable sql database
 
-        if (readTask(task, date).getCount() > 0) {
-            Log.e(getClass().getName(), "identical task already exists");
+        if (readTask(task, date)!=null) {
+            Log.e(getClass().getName(), "same task already exists");
             return ERROR_TASK_ALREADY_EXISTS;
         }
 
         ContentValues values = new ContentValues();
-        values.put(DBContract.Task.COLUMN_NAME_TASK_NAME, task);
-        values.put(DBContract.Task.COLUMN_NAME_TASK_DATE, calendarToDatetime(date));
+        values.put(DBContract.TaskColumns.COLUMN_NAME_TASK_NAME, task);
+        values.put(DBContract.TaskColumns.COLUMN_NAME_TASK_DATE, calendarToDatetime(date));
 
-        long result = db.insert(DBContract.Task.TABLE_NAME, null, values);
-        db.close();
+        long result = db.insert(DBContract.TaskColumns.TABLE_NAME, null, values);
         return result;
     }
 
-    public Cursor readTaskAll() {
-        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+    public ArrayList<Task> readTaskAll() {
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
 
         String[] projection = {
-                DBContract.Task._ID,
-                DBContract.Task.COLUMN_NAME_TASK_NAME,
-                DBContract.Task.COLUMN_NAME_TASK_DATE
+                DBContract.TaskColumns._ID,
+                DBContract.TaskColumns.COLUMN_NAME_TASK_NAME,
+                DBContract.TaskColumns.COLUMN_NAME_TASK_DATE
         };
 
-        String sortOrder = DBContract.Task.COLUMN_NAME_TASK_DATE + " ASC";
+        String sortOrder = DBContract.TaskColumns.COLUMN_NAME_TASK_DATE + " ASC";
 
         Cursor cursor = db.query(
-                DBContract.Task.TABLE_NAME,
+                DBContract.TaskColumns.TABLE_NAME,
                 projection,
                 null,
                 null,
                 null,
                 null,
                 sortOrder);
-        db.close();
-        return cursor;
+
+        // build an ArrayList of Task from Cursor
+        ArrayList<Task> taskArrayList = new ArrayList<Task>();
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                Task task = new Task(cursor.getString(1),
+                        datetimeToCalendar(cursor.getString(2)));
+                taskArrayList.add(task);
+                cursor.moveToNext();
+            }
+        }
+
+        // close after use to prevent memory leak
+        cursor.close();
+        return taskArrayList;
     }
 
-    public Cursor readTask(String task, Calendar date) {
+    public Task readTask(String task, Calendar date) {
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
 
         String[] projection = {
-                DBContract.Task._ID,
-                DBContract.Task.COLUMN_NAME_TASK_NAME,
-                DBContract.Task.COLUMN_NAME_TASK_DATE
+                DBContract.TaskColumns._ID,
+                DBContract.TaskColumns.COLUMN_NAME_TASK_NAME,
+                DBContract.TaskColumns.COLUMN_NAME_TASK_DATE
         };
-        String selection = DBContract.Task.COLUMN_NAME_TASK_NAME + "=? AND " +
-                DBContract.Task.COLUMN_NAME_TASK_DATE + "=?";
+        String selection = DBContract.TaskColumns.COLUMN_NAME_TASK_NAME + "=? AND " +
+                DBContract.TaskColumns.COLUMN_NAME_TASK_DATE + "=?";
         String[] selectionArgs = {task, calendarToDatetime(date)};
 
 
         Cursor cursor = db.query(
-                DBContract.Task.TABLE_NAME,
+                DBContract.TaskColumns.TABLE_NAME,
                 projection,
                 selection,
                 selectionArgs,
                 null,
                 null,
                 null);
-        db.close();
-        return cursor;
+
+        Task result = null;
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            result = new Task(cursor.getString(1),
+                    datetimeToCalendar(cursor.getString(2)));
+        }
+
+        // close after use to prevent memory leak
+        cursor.close();
+        return result;
     }
 
     public int deleteTask(String task, Calendar date) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
 
-        String selection = DBContract.Task.COLUMN_NAME_TASK_NAME + "=? AND " +
-                DBContract.Task.COLUMN_NAME_TASK_DATE + "=?";
+        String selection = DBContract.TaskColumns.COLUMN_NAME_TASK_NAME + "=? AND " +
+                DBContract.TaskColumns.COLUMN_NAME_TASK_DATE + "=?";
         String[] selectionArgs = {task, calendarToDatetime(date)};
 
-        int result = db.delete(DBContract.Task.TABLE_NAME, selection, selectionArgs);
-        db.close();
+        int result = db.delete(DBContract.TaskColumns.TABLE_NAME, selection, selectionArgs);
         return result;
     }
 
     private String calendarToDatetime(Calendar date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DBContract.SQL_DATETIME_FORMAT);
         return dateFormat.format(date.getTime());
+    }
+
+    private Calendar datetimeToCalendar(String datetime) {
+        Calendar task_date = Calendar.getInstance();
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DBContract.SQL_DATETIME_FORMAT);
+            Date date = dateFormat.parse(datetime);
+            task_date.setTime(date);
+        } catch(ParseException e) {
+            e.printStackTrace();
+            Log.e(getClass().getName(), "Date Format doesn't matches the datetime data." +
+                    " Maybe the database has been crashed");
+            // TODO handle error situation
+        }
+        return task_date;
     }
 
 

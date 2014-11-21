@@ -32,7 +32,7 @@ public class HomeActivity extends BaseActivity {
         });
 
         dbAdapter = DBAdapter.getInstance(this);
-        taskListAdapter = new TaskListAdapter(this, dbAdapter.readTaskAll());
+        taskListAdapter = new TaskListAdapter(this, R.layout.list_task, dbAdapter.readTaskAll());
         ListView listView_task = (ListView)findViewById(R.id.listView_task);
         listView_task.setAdapter(taskListAdapter);
     }
