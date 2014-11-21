@@ -65,10 +65,11 @@ public class AddTaskActivity extends BaseActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch(menuItem.getItemId()) {
                     case R.id.action_save:
-                        /*DBAdapter dbAdapter = new DBAdapter(AddTaskActivity.this);
+                        DBAdapter dbAdapter = DBAdapter.getInstance(AddTaskActivity.this);
                         EditText editText_taskName = (EditText)findViewById(R.id.editText_taskName);
                         dbAdapter.insertTask(editText_taskName.getText().toString(),
-                                deadlineManager.getDeadline());*/
+                                deadlineManager.getDeadline());
+                        setResult(RESULT_OK);
                         finish();
                 }
                 return false;

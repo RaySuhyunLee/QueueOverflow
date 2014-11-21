@@ -8,5 +8,7 @@
     <string name="save">저장</string>
     <string name="date_format">yyyy년 MMMM d일 EEEE</string>
     <string name="time_format">a h시 mm분</string>
+    <string name="daysLeft">D-</string>
+    <string name="hoursLeft">H-</string>
 
 </resources>

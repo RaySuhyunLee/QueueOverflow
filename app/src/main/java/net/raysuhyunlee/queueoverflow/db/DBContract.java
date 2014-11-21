@@ -10,8 +10,12 @@ import android.provider.BaseColumns;
  */
 public class DBContract {
 
+    public static final String SQL_DATETIME_FORMAT =
+            "yyyy-mm-dd HH:mm:ss";
+
     public static final String SQL_CREATE_TASK =
-            "CREATE_TABLE " + Task.TABLE_NAME + "(" +
+            "CREATE TABLE " + Task.TABLE_NAME + "(" +
+                    Task._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     Task.COLUMN_NAME_TASK_NAME + " VARCHAR(30)," +
                     Task.COLUMN_NAME_TASK_DATE + " DATETIME);";
 

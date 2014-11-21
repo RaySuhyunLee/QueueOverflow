@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import net.raysuhyunlee.queueoverflow.db.DBAdapter;
 
@@ -12,6 +13,7 @@ import net.raysuhyunlee.queueoverflow.db.DBAdapter;
 public class HomeActivity extends BaseActivity {
     public static final int REQUEST_ADD_PLAN_ACTIVITY = 100;
 
+    private TaskListAdapter taskListAdapter;
     private DBAdapter dbAdapter;
 
     @Override
@@ -29,6 +31,18 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
-        dbAdapter = new DBAdapter(this);
+        dbAdapter = DBAdapter.getInstance(this);
+        taskListAdapter = new TaskListAdapter(this, dbAdapter.readTaskAll());
+        ListView listView_task = (ListView)findViewById(R.id.listView_task);
+        listView_task.setAdapter(taskListAdapter);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_ADD_PLAN_ACTIVITY
+                && resultCode == RESULT_OK) {
+
+        }
     }
 }
